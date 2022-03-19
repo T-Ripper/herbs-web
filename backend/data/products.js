@@ -1,7 +1,6 @@
 const products = [
   {
-    _id: "1",
-    name: "Awoka",
+    name: "Awokaa",
     image: "/assets/Awoka.jpeg",
 
     description: `Mix half teaspoon of Awoka powder with hot water after ten minutes. Drink it , it works rheumatism and Arthritis.  
@@ -16,7 +15,6 @@ const products = [
     numReviews: 3,
   },
   {
-    _id: "2",
     name: "Fibroid",
     image: "/assets/Fibroid.jpeg",
 
@@ -32,7 +30,6 @@ const products = [
     numReviews: 3,
   },
   {
-    _id: "3",
     name: "Hypertension",
     image: "/assets/Hypertension.jpeg",
 
@@ -48,9 +45,8 @@ const products = [
     numReviews: 3,
   },
   {
-    _id: "4",
-    name: "Jedi",
-    image: "/assets/Jedi .jpeg",
+    name: "Narun",
+    image: "/assets/Narun.jpeg",
 
     description: `Mix half teaspoon of Awoka powder with hot water after ten minutes. Drink it , it works rheumatism and Arthritis.  
       You can also use it by taking the mixture and
@@ -64,9 +60,8 @@ const products = [
     numReviews: 3,
   },
   {
-    _id: "5",
-    name: "Narun",
-    image: "/assets/Narun.jpeg",
+    name: "Jedi",
+    image: "/assets/Jedi.jpeg",
 
     description: `Mix half teaspoon of Awoka powder with hot water after ten minutes. Drink it , it works rheumatism and Arthritis.  
       You can also use it by taking the mixture and
@@ -80,7 +75,6 @@ const products = [
     numReviews: 3,
   },
   {
-    _id: "6",
     name: "Olugbogi",
     image: "/assets/Olugbogi.jpeg",
 
@@ -96,7 +90,6 @@ const products = [
     numReviews: 3,
   },
   {
-    _id: "7",
     name: "Ulcer",
     image: "/assets/Ulcer.jpeg",
 
@@ -112,4 +105,5 @@ const products = [
     numReviews: 3,
   },
 ];
+
 export default products;
