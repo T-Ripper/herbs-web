@@ -10,7 +10,7 @@ const products = [
 
     category: "Both",
     price: 20,
-    countInStock: 3,
+    countInStock: 13,
     rating: 2,
     numReviews: 3,
   },
