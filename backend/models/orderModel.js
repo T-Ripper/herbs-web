@@ -7,7 +7,6 @@ const orderSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-
     orderItems: [
       {
         name: { type: String, required: true },
@@ -26,6 +25,7 @@ const orderSchema = mongoose.Schema(
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
+      phoneNumber: { type: Number, required: true },
     },
     paymentMethod: {
       type: String,
@@ -73,32 +73,6 @@ const orderSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
-// const paystackPayment = {
-//   hostname: "api.paystack.co",
-//   port: 443,
-//   path: "/transactions/verify/:reference",
-//   method: "GET",
-//   headers: {
-//     Authrization: "PAYSTACK_SECRET_KEY",
-//   },
-// };
-
-// https
-//   .request(paystackPayment, (res) => {
-//     let data = "";
-
-//     res.on("data", (chunk) => {
-//       data += chunk;
-//     });
-
-//     res.on("end", () => {
-//       console.log(JSON.parse(data));
-//     });
-//   })
-//   .on("error", (error) => {
-//     console.log(error);
-//   });
 
 const Order = mongoose.model("Order", orderSchema);
 

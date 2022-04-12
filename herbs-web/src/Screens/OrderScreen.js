@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import {
-  usePaystackPayment,
-  PaystackButton,
-  PaystackConsumer,
-} from "react-paystack";
-import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+
+import { PaystackButton } from "react-paystack";
+import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../Component/Message";
 import Loader from "../Component/Loader";
 import { getOrderDetails, payOrder } from "../actions/orderActions";
 import { ORDER_PAY_RESET } from "../constants/orderConstants";
-//import { ShippingScreen } from "./ShippingScreen";
 
 const OrderScreen = ({ match }) => {
   const [amount, setAmount] = useState(0);
@@ -24,22 +19,15 @@ const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
 
   const orderPay = useSelector((state) => state.orderPay);
-
   const { loading: loadingPay, success: successPay } = orderPay;
+
+  // const orderDeliver = useSelector((state) => state.orderDeliver);
+  // const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
 
   const [payment, setPayment] = useState(false);
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
-  useEffect(() => {
-    if (!order || successPay) {
-      dispatch(getOrderDetails(orderId));
-      dispatch({ type: ORDER_PAY_RESET });
-      //
-    }
-  }, [dispatch, orderId, successPay]);
-  //const [payReady, setPayReady] = useState(false);
-  console.log(orderId);
 
   useEffect(() => {
     console.log(order);
@@ -61,45 +49,39 @@ const OrderScreen = ({ match }) => {
   }
 
   console.log(order);
+
   const config = {
     reference: new Date().getTime().toString(),
-    publicKey: "pk_test_71d98a08f5170e693037c1b26bcc6dd76cea3c75",
     email: email,
     amount: amount,
-    ref: "REFERENCE",
-    callback: function (response) {
-      const reference = response.payment;
-      alert("Payment complete!  reference: " + reference);
-    },
+    publicKey: "pk_test_71d98a08f5170e693037c1b26bcc6dd76cea3c75",
   };
+
+  useEffect(() => {
+    if (!order || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(getOrderDetails(orderId));
+
+      //
+    }
+  }, [dispatch, orderId, successPay, order]);
+  //const [payReady, setPayReady] = useState(false);
+  console.log(orderId);
+
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
-    dispatch(payOrder(orderId, paymentResult));
+    dispatch(payOrder(orderId, paymentResult, email));
   };
   const handlePaystackCloseAction = () => {
     console.log("closed");
   };
 
-  // useEffect(() => {
-  //   if (successPaymentHandler) {
-  //     setPayment(order.PaidAt === true);
-  //   } else {
-  //     payment(order.PaidAt === false);
-  //   }
-  // }, [order]);
-
-  //  successPaymentHandler () {
-  //     order.PaidAt === true
-  //   }
-
   const componentProps = {
     ...config,
-    text: "Paystack Button Configuration",
+    text: "Buy now",
+    color: "red",
     onSuccess: (reference) => successPaymentHandler(reference),
     onClose: handlePaystackCloseAction,
   };
-
-  console.log(orderDetails);
 
   return loading ? (
     <Loader />
@@ -218,19 +200,27 @@ const OrderScreen = ({ match }) => {
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-                  <PaystackButton {...componentProps}>
-                    {({ initializePayment }) => (
-                      <Button
-                        variant="danger"
-                        onClick={() =>
-                          initializePayment(
-                            successPaymentHandler,
-                            handlePaystackCloseAction
-                          )
-                        }
-                      ></Button>
-                    )}
-                  </PaystackButton>
+                  {payment ? (
+                    <Loader />
+                  ) : (
+                    <PaystackButton
+                      style={{ color: "red" }}
+                      {...componentProps}
+                    >
+                      {({ initializePayment }) => (
+                        <button
+                          style={{ color: "red" }}
+                          variant="danger"
+                          onClick={() =>
+                            initializePayment(
+                              successPaymentHandler,
+                              handlePaystackCloseAction
+                            )
+                          }
+                        ></button>
+                      )}
+                    </PaystackButton>
+                  )}
                 </ListGroup.Item>
               )}
             </ListGroup>

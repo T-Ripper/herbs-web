@@ -6,7 +6,6 @@ import Message from "../Component/Message";
 import Loader from "../Component/Loader";
 import FormContainer from "../Component/FormContainer";
 import { register } from "../actions/userActions";
-import Homescreen from "./Homescreen";
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -31,7 +30,7 @@ const RegisterScreen = ({ location, history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage("Pasword do not match");
+      setMessage("Passwords do not match");
     } else {
       dispatch(register(name, email, password));
     }
@@ -40,8 +39,8 @@ const RegisterScreen = ({ location, history }) => {
   return (
     <FormContainer>
       <h1>Sign Up</h1>
-      {message && <Message variant="warning">{message}</Message>}
-      {error && <Message variant="warning">{error}</Message>}
+      {message && <Message variant="danger">{message}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="name">
@@ -53,6 +52,7 @@ const RegisterScreen = ({ location, history }) => {
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
+
         <Form.Group controlId="email">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
@@ -84,15 +84,15 @@ const RegisterScreen = ({ location, history }) => {
         </Form.Group>
 
         <Button type="submit" variant="primary">
-          Register <Link to={Homescreen}></Link>
+          Register
         </Button>
       </Form>
 
       <Row className="py-3">
         <Col>
-          Have an Account ?{" "}
+          Have an Account?{" "}
           <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-            Log In
+            Login
           </Link>
         </Col>
       </Row>

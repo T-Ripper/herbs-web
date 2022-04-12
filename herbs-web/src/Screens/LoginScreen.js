@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,11 +8,13 @@ import Loader from "../Component/Loader";
 import FormContainer from "../Component/FormContainer";
 import { login } from "../actions/userActions";
 
-const LoginScreen = ({ location, history }) => {
+const LoginScreen = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
@@ -19,11 +22,9 @@ const LoginScreen = ({ location, history }) => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
-    console.log(userInfo);
-
     if (userInfo) {
-      console.log(userInfo);
-      console.log(redirect);
+      // console.log(userInfo);
+      // console.log(redirect);
 
       history.push(redirect);
     }
@@ -36,8 +37,8 @@ const LoginScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
-      {error && <Message variant="warning">{error}</Message>}
+      <h1>SIGN IN</h1>
+      {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="email">
@@ -67,7 +68,7 @@ const LoginScreen = ({ location, history }) => {
 
       <Row className="py-3">
         <Col>
-          New Customer?
+          New Customer?{" "}
           <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
             Register
           </Link>
