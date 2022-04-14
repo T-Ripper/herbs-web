@@ -14,7 +14,7 @@ export const sliderItems = [
     id: 2,
     img: Second,
     title: "Save 40%",
-    desc: "Dont compromise your health Buy some herbs now",
+    desc: "Save 40% and get the full package",
     bg: "f5fafd",
     price: 190,
   },

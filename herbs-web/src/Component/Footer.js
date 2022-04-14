@@ -1,19 +1,3 @@
-// import React from "react";
-// import { Container, Row, Col } from "react-bootstrap";
-
-// const Footer = () => {
-//   return (
-//     <footer>
-//       <Container>
-//         <Row>
-//           <Col className="text-center py-3">Copyright &copy: Herb </Col>
-//         </Row>
-//       </Container>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
 import { MailOutline, Phone, Room } from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
@@ -32,9 +16,9 @@ const Left = styled.div`
   flex-direction: column;
   padding: 20;
 `;
-const Logo = styled.img`
-  margin: 20px 0;
-`;
+// const Logo = styled.img`
+//   margin: 20px 0;
+// `;
 const Desc = styled.p``;
 const SocialContainer = styled.div`
   display: flex;
@@ -102,13 +86,13 @@ const Footer = () => {
         </Desc>
         <SocialContainer>
           <SocialIcon color="3B5999">
-            <i class="bi bi-facebook"></i>
+            <i className="bi bi-facebook"></i>
           </SocialIcon>
           <SocialIcon color="E4405F">
-            <i class="bi bi-instagram"></i>
+            <i className="bi bi-instagram"></i>
           </SocialIcon>
           <SocialIcon color="E60023">
-            <i class="bi bi-youtube"></i>
+            <i className="bi bi-youtube"></i>
           </SocialIcon>
         </SocialContainer>
       </Left>

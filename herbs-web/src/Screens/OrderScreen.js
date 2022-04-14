@@ -2,14 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { PaystackButton } from "react-paystack";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../Component/Message";
 import Loader from "../Component/Loader";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
-import { ORDER_PAY_RESET } from "../constants/orderConstants";
+import {
+  deliverOrder,
+  getOrderDetails,
+  payOrder,
+} from "../actions/orderActions";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from "../constants/orderConstants";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   const [amount, setAmount] = useState(0);
 
   const [email, setEmail] = useState("");
@@ -21,21 +28,26 @@ const OrderScreen = ({ match }) => {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
-  // const orderDeliver = useSelector((state) => state.orderDeliver);
-  // const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
 
   const [payment, setPayment] = useState(false);
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
-    console.log(order);
+    if (!userInfo) {
+      history.push("/login");
+    }
     if (order) {
       setAmount(order.totalPrice * 100 * 577);
       setEmail(order.user.email);
     }
-  }, [order]);
+  }, [order, history, userInfo]);
 
   if (!loading) {
     // Calculate Prices
@@ -58,13 +70,16 @@ const OrderScreen = ({ match }) => {
   };
 
   useEffect(() => {
-    if (!order || successPay) {
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
 
       //
+    } else {
+      setPayment();
     }
-  }, [dispatch, orderId, successPay, order]);
+  }, [dispatch, orderId, successPay, order, successDeliver]);
   //const [payReady, setPayReady] = useState(false);
   console.log(orderId);
 
@@ -73,6 +88,10 @@ const OrderScreen = ({ match }) => {
   };
   const handlePaystackCloseAction = () => {
     console.log("closed");
+  };
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order));
   };
 
   const componentProps = {
@@ -128,7 +147,7 @@ const OrderScreen = ({ match }) => {
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant="success"> Paid on {order.PaidAt} </Message>
+                <Message variant="success"> Paid </Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
               )}
@@ -223,6 +242,21 @@ const OrderScreen = ({ match }) => {
                   )}
                 </ListGroup.Item>
               )}
+              {loadingDeliver && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={deliverHandler}
+                    >
+                      Mark As Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>

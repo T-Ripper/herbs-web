@@ -149,7 +149,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/orders/${order._id}/DELIVER`,
+      `/api/orders/${order._id}/deliver`,
       {},
       config
     );
